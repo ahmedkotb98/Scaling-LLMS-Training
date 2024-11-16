@@ -1,1 +1,1 @@
-# scaling-llm-training
+# Scaling-LLMS-Training
