@@ -1,0 +1,60 @@
+# model params
+base_model: casperhansen/llama-3-70b-fp16
+
+# dataset params
+datasets:
+  - path: Yukang/LongAlpaca-12k
+    type: alpaca
+
+output_dir: ./models/llama70B-LongAlpaca
+
+
+# model params
+sequence_length: 1024
+pad_to_sequence_len: true
+special_tokens:
+  pad_token: <|end_of_text|>
+
+bf16: auto
+tf32: false
+
+# training params
+micro_batch_size: 1
+num_epochs: 1
+optimizer: adamw_torch
+learning_rate: 0.0002
+
+logging_steps: 1
+
+
+# LoRA / qLoRA
+adapter: qlora
+
+lora_r: 32
+lora_alpha: 16
+lora_dropout: 0.05
+
+lora_target_linear: true
+
+# Gradient Accumulation
+gradient_accumulation_steps: 1
+
+# Gradient Checkpointing
+gradient_checkpointing: true
+
+# Low Precision
+load_in_8bit: false
+load_in_4bit: true
+
+# Flash Attention
+flash_attention: true
+
+# FSDP
+fsdp:
+  - full_shard
+  - auto_wrap
+fsdp_config:
+  fsdp_offload_params: true
+  fsdp_cpu_ram_efficient_loading: true
+  fsdp_state_dict_type: FULL_STATE_DICT
+  fsdp_transformer_layer_cls_to_wrap: LlamaDecoderLayer
